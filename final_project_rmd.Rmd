@@ -1,0 +1,107 @@
+---
+title: 'Final Project 4: R Markdown'
+author: "Joseph Lee"
+date: "`r Sys.Date()`"
+output: html_document
+---
+     
+```{r setup, include=FALSE}        
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+## Introduction
+
+This report analyzes data from the Centers for Disease Control and Prevention's Behavioral Risk Factor Surveillance System (BRFSS) to examine the relationship between mental health and financial barriers among caregivers of individuals with developmental disabilities (DD Caregivers). Caregivers of individuals with DD often face unique challenges, including higher stress levels and difficulties accessing healthcare services. This study aims to explore how mental health outcomes correlate with financial hardship and insurance coverage among these caregivers.
+
+The primary objectives of this analysis are:
+
+1. **To assess the mental health status of DD Caregivers.**
+
+2. **To examine how the inability to afford a doctor impacts DD caregiver mental health.**
+
+3. **To investigate whether insurance type is associated with mental health outcomes.**
+
+The findings from this study can inform policies and support programs aimed at improving the well-being of caregivers caring for individuals with developmental disabilities by addressing financial barriers to healthcare.
+
+```{r load-data}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(kableExtra)
+
+data <- read_csv("BRFSS_Caregiver_Subset.csv")
+
+#Cleaning Data for Missing/None Values
+data <- data %>% 
+  mutate(
+    menthlth = ifelse(menthlth %in% c(88, 99), NA, menthlth),
+    addepev3 = ifelse(addepev3 %in% c(7, 9), NA, addepev3),
+    medcost1 = ifelse(medcost1 %in% c(7, 9), NA, medcost1),
+    primins1 = ifelse(primins1 %in% c(99), NA, primins1)
+  )
+
+```
+
+## Regression: Days of Poor Mental Health vs. Could Not Afford Doctor
+```{r regression-analysis}
+regression_model <- lm(menthlth ~ medcost1, data = data)
+regression_results <- summary(regression_model)
+
+regression_table <- as.data.frame(regression_results$coefficients)
+colnames(regression_table) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
+
+regression_table %>% kable("html") %>% kable_styling(full_width = FALSE)
+```
+
+### Table Description
+
+The table above displays the results of a linear regression analysis examining the relationship between the inability to afford a doctor (`medcost1`) and days of poor mental health (`menthlth`).  
+
+The intercept (20.88) represents the estimated number of poor mental health days for caregivers who could afford a doctor. The coefficient for `medcost1` (-3.13) suggests that those who could not afford a doctor report 3.13 fewer poor mental health days, but this result is not at all statistically significant (p = 0.1611). 
+
+This suggests that **financial barriers alone may not strongly predict mental health outcomes** in this dataset, and other factors may play a larger role.
+
+
+
+## Data Visualization
+```{r plot-data}
+data$primins1 <- factor(data$primins1, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 88, 77, 99),
+                        labels = c("Employer Plan", 
+                                   "Private Plan (Self-Purchased)", 
+                                   "Medicare", 
+                                   "Medigap", 
+                                   "Medicaid", 
+                                   "CHIP", 
+                                   "Military/VA (TRICARE/CHAMP-VA)", 
+                                   "Indian Health Service", 
+                                   "State Sponsored Plan", 
+                                   "Other Government Program", 
+                                   "Uninsured (No Coverage)", 
+                                   "Don't Know/Not Sure", 
+                                   "Refused"))
+
+data <- data %>% filter(!primins1 %in% c("Don't Know/Not Sure", "Refused"))
+data <- data %>% filter(!is.na(primins1))
+
+
+# Boxplot
+
+ggplot(data, aes(x = primins1, y = menthlth)) +
+  geom_boxplot(outlier.shape = 16, outlier.size = 2) +  # Keeps outliers visible
+  labs(title = "Days of Poor Mental Health by Insurance Type",
+       x = "Primary Insurance Type",
+       y = "Days of Poor Mental Health") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1, size = 10))
+
+```
+
+### Boxplot Description
+
+The boxplot above shows days of poor mental health (`menthlth`) among caregivers of individuals with developmental disabilities, grouped by insurance type (`primins1`).
+
+Caregivers with employer-sponsored and private insurance report fewer poor mental health days, while those with Medicaid, Military/VA, or no insurance report higher medians and greater variability, potentially indicating greater mental health struggles. Of note, uninsured caregivers and those on state-sponsored plans show higher median levels, and outliers across groups suggest extreme mental health burdens.
+
+This visualization underscores potential mental health disparities linked to insurance coverage and access.
+
+

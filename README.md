@@ -1,7 +1,10 @@
 **This README explains the project structure/contents, how to generate the report, and where to find the code used for creating the report's table and figure.**
 
 ## Repository Contents
-
+- `code/` — folder containing:
+  - `load_data.R`
+  - `run_regression.R`
+  - `create_plot.R`
 - `final_project_rmd.Rmd` — the main R Markdown source file
 - `BRFSS_Caregiver_Subset.csv` — subset of the BRFSS data used in the analysis
 - `final_report.html` — output report that will be generated from the R Markdown
@@ -17,6 +20,14 @@ The generated report includes:
 - A boxplot comparing days of poor mental health across different primary insurance types.
 
 ## How to Generate the Report
+
+**Before you build the report for the first time, install all R package dependencies by running:**
+
+
+make install
+
+
+**Then, in the same terminal session:**
 
 1. Open the Terminal tab in RStudio.
 2. Ensure you are in the root project folder.

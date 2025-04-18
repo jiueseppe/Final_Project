@@ -1,5 +1,10 @@
 # Makefile for creating final report
 
+.PHONY: install
+
+install:
+	Rscript -e "renv::restore()"
+
 report: final_report.html
 
 final_report.html: final_project_rmd.Rmd

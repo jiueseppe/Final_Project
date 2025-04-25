@@ -42,3 +42,37 @@ make report
 - **Table (regression results):** Code for creating the table is in the chunk labeled `regression-analysis` in `final_project_rmd.Rmd`.
 - **Figure (boxplot):** Code for creating the figure is in the chunk labeled `plot-data` in `final_project_rmd.Rmd`.
 
+============================================================
+## Docker
+
+This repository also includes a Dockerfile for fully-reproducible builds of the report.
+
+### Build the Docker image
+
+From the project root, run the following in the terminal/bash:
+
+docker build -t jiuseppe/final-report:latest .
+
+================
+Or, pull the pre-built image from DockerHub by running the following code in your terminal:
+
+docker pull jiuseppe/final-report:latest
+
+================
+To View image on DockerHub → https://hub.docker.com/r/jiuseppe/final-report
+
+================
+### Run the container
+These targets will mount a local report/ folder and place final_report.html inside it when they complete:
+
+### For macOS/Linux - run the following in your terminal:
+
+make docker-run-mac
+
+### For Windows - run the following in your terminal:
+
+make docker-run-win
+
+=============
+
+Once finished, open report/final_report.html in your browser to view the compiled report.

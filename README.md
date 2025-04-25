@@ -58,7 +58,7 @@ docker build -t jiuseppe/final-report:latest .
 docker pull jiuseppe/final-report:latest
 
 
-## To View image on DockerHub → https://hub.docker.com/r/jiuseppe/final-report
+## To View image on DockerHub (click on Tags→Latest) → https://hub.docker.com/r/jiuseppe/final-report
 
 ### Run the container
 These targets will mount a local report/ folder and place final_report.html inside it when they complete:

@@ -49,7 +49,7 @@ This repository also includes a Dockerfile for fully-reproducible builds of the 
 
 ## Build the Docker image
 
-###From the project root, run the following in the terminal/bash:
+### From the project root, run the following in the terminal/bash:
 
 docker build -t jiuseppe/final-report:latest .
 

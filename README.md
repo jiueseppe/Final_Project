@@ -53,12 +53,12 @@ From the project root, run the following in the terminal/bash:
 
 docker build -t jiuseppe/final-report:latest .
 
-##Or, pull the pre-built image from DockerHub by running the following code in your terminal:
+## Or, pull the pre-built image from DockerHub by running the following code in your terminal:
 
 docker pull jiuseppe/final-report:latest
 
 
-##To View image on DockerHub → https://hub.docker.com/r/jiuseppe/final-report
+## To View image on DockerHub → https://hub.docker.com/r/jiuseppe/final-report
 
 
 ### Run the container

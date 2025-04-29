@@ -17,9 +17,9 @@ clean:
 ## macOS / Linux
 docker-run-mac:
 	mkdir -p report
-	docker run --rm -v "$(pwd)/report":/project/report jiuseppe/final-report
+	docker run --rm -v "$$(pwd)/report:/project/report" jiuseppe/final-report
 
 ## Windows
 docker-run-win:
 	mkdir -p report
-	docker run --rm -v "//$$(pwd)/report":/project/report jiuseppe/final-report
+	docker run --rm -v "//$$(pwd)/report:/project/report" jiuseppe/final-report
